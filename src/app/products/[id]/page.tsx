@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { fetchProduct } from '@/lib/api';
 import BackButton from '@/components/BackButton';
-
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -10,6 +10,7 @@ interface PageProps {
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
+
   const product = await fetchProduct(Number(id)).catch(() => notFound());
 
   return (
