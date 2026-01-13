@@ -5,7 +5,7 @@ import BackButton from '@/components/BackButton';
 
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default async function ProductPage({ params }: PageProps) {
