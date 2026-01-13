@@ -165,7 +165,7 @@ export default function HomePage() {
                     setCurrentPage(prev => Math.max(1, prev - 1))
                   }
                   disabled={currentPage === 1}
-                  className="px-4 py-2 border rounded-lg disabled:opacity-50"
+                  className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
                   aria-label="Go to previous page"
                 >
                   Previous
@@ -179,7 +179,7 @@ export default function HomePage() {
                 <button
                   onClick={() => setCurrentPage(prev => prev + 1)}
                   disabled={currentPage * pageSize >= totalFiltered}
-                  className="px-4 py-2 border rounded-lg disabled:opacity-50"
+                  className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
                   aria-label="Go to next page"
                 >
                   Next
