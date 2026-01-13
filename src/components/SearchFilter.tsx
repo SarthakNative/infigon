@@ -12,7 +12,7 @@ interface SearchFilterProps {
   sortBy: 'price-low' | 'price-high';
   setSortBy: (value: 'price-low' | 'price-high') => void;
 
-  // Pagination props (NEW)
+  // Pagination props 
   pageSize: number;
   setPageSize: (value: number) => void;
   totalProducts: number;
