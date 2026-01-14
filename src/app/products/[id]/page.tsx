@@ -4,18 +4,20 @@ import { fetchProduct } from '@/lib/api';
 import BackButton from '@/components/BackButton';
 
 /**
- * Force dynamic rendering for each request
+ * ✅ Allow dynamic routes at runtime (CRITICAL)
  */
-export const dynamic = 'force-dynamic';
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const dynamicParams = true;
 
 /**
- * Remove or modify generateStaticParams
+ * ✅ ISR: on-demand page generation
+ */
+export const revalidate = 60;
+
+/**
+ * ❌ Do not prebuild any pages
  */
 export async function generateStaticParams() {
-  // Return empty array or some sample IDs
   return [];
-  // OR return [{ id: '1' }, { id: '2' }] for some pre-generation
 }
 
 interface PageProps {
@@ -28,7 +30,6 @@ export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
 
   const numericId = Number(id);
-
   if (Number.isNaN(numericId)) {
     notFound();
   }
