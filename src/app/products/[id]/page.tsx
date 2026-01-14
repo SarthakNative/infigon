@@ -4,23 +4,22 @@ import { fetchProduct } from '@/lib/api';
 import BackButton from '@/components/BackButton';
 
 /**
- * ✅ Allow dynamic routes at runtime (CRITICAL)
- */
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-export const dynamicParams = true;
-
-/**
- * ✅ ISR: on-demand page generation
+ * ISR: page is generated on-demand and revalidated
  */
 export const revalidate = 60;
 
 /**
- * ❌ Do not prebuild any pages
+ * Return empty array for full on-demand generation
+ * This is required by the documentation for runtime generation
  */
 export async function generateStaticParams() {
   return [];
 }
+
+/**
+ * Or use this alternative approach:
+ */
+// export const dynamic = 'force-static';
 
 interface PageProps {
   params: Promise<{
@@ -32,12 +31,12 @@ export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
 
   const numericId = Number(id);
+
   if (Number.isNaN(numericId)) {
     notFound();
   }
 
   const product = await fetchProduct(numericId).catch(() => notFound());
-
   return (
     <div
       className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8"
@@ -48,7 +47,6 @@ export default async function ProductPage({ params }: PageProps) {
 
       <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
         <div className="md:flex">
-          {/* Product Image */}
           <div className="md:w-1/2 p-8">
             <div className="relative h-96" aria-label="Product image">
               <Image
@@ -61,43 +59,27 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Product Info */}
           <div className="md:w-1/2 p-8">
-            <span
-              className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-              aria-label={`Product category: ${product.category}`}
-            >
+            <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
               {product.category}
             </span>
 
-            <h1 className="text-3xl font-bold mt-4 mb-2 text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold mt-4 mb-2">
               {product.title}
             </h1>
 
             <div className="flex items-center mb-6">
-              <span
-                className="text-4xl font-bold text-blue-600"
-                aria-label={`Price: ${product.price} dollars`}
-              >
+              <span className="text-4xl font-bold text-blue-600">
                 ${product.price}
               </span>
-
               <div className="ml-6">
                 ⭐ {product.rating.rate} ({product.rating.count} reviews)
               </div>
             </div>
 
-            <p
-              className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed"
-              aria-label="Product description"
-            >
-              {product.description}
-            </p>
+            <p className="mb-8">{product.description}</p>
 
-            <button
-              className="cursor-pointer w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-              aria-label={`Add ${product.title} to cart`}
-            >
+            <button className="w-full bg-blue-600 text-white py-3 rounded-lg">
               Add to Cart
             </button>
           </div>
