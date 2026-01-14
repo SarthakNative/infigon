@@ -3,41 +3,10 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BackButton from '@/components/BackButton';
 
-/**
- * Generate static pages for known product IDs at build time
- */
-export async function generateStaticParams() {
-  try {
-    // Fetch all products to get their IDs
-    const response = await fetch('https://fakestoreapi.com/products', {
-      cache: 'force-cache', // Ensure it's cached during build
-    });
-    
-    if (!response.ok) {
-      return [];
-    }
-    
-    const products = await response.json();
-    
-    // Return array of params for each product
-    return products.map((product: { id: number }) => ({
-      id: product.id.toString(),
-    }));
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [];
-  }
-}
-
-/**
- * Enable dynamic params - allows accessing products not in generateStaticParams
- */
+// Force this route to be fully dynamic
+export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
-
-/**
- * Enable ISR - revalidate every 3600 seconds (1 hour)
- */
-export const revalidate = 3600;
+export const revalidate = 0;
 
 interface PageProps {
   params: Promise<{
@@ -63,28 +32,35 @@ export default async function ProductPage({ params }: PageProps) {
 
   const numericId = Number(id);
 
-  if (Number.isNaN(numericId)) {
+  if (Number.isNaN(numericId) || numericId < 1 || numericId > 20) {
     notFound();
   }
 
-  // Fetch product directly here with proper cache settings
+  // Fetch product with no caching
   let product: Product;
   try {
     const response = await fetch(
       `https://fakestoreapi.com/products/${numericId}`,
       {
-        // Use 'force-cache' for static generation
-        // Or 'no-store' if you want always fresh data
-        cache: 'force-cache',
-        next: { revalidate: 3600 }, // ISR: revalidate every hour
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
 
     if (!response.ok) {
+      console.error(`Failed to fetch product ${numericId}: ${response.status}`);
       notFound();
     }
 
     product = await response.json();
+    
+    // Validate product data
+    if (!product || !product.id) {
+      console.error(`Invalid product data for ID ${numericId}`);
+      notFound();
+    }
   } catch (error) {
     console.error('Error fetching product:', error);
     notFound();
