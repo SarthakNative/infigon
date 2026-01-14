@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Product Explorer 🛒
 
-## Getting Started
+🔗 **Live Demo:** https://infigon-eight.vercel.app/
 
-First, run the development server:
+A production-style frontend application built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**, showcasing modern component architecture, performance best practices, and user-focused features.
 
+---
+
+## 🚀 Setup Instructions
+
+### Prerequisites
+- Node.js (v18 or later)
+- npm or yarn
+
+### Steps
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+
+# Navigate into the project
+cd product-explorer
+
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Run the development server
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and visit:  
+👉 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features Implemented
 
-## Learn More
+### ✅ Core Features
 
-To learn more about Next.js, take a look at the following resources:
+#### 1. Product Listing Page
+- Fetches products from:
+  - https://fakestoreapi.com/products
+- Displays products in a **responsive grid**
+  - Image
+  - Title
+  - Price
+  - Category
+- Includes:
+  - Loading state (skeleton loaders)
+  - Error state with graceful fallback UI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 2. Search & Filtering
+- Client-side search by **product title**
+- Category-based filtering via dropdown
+- Instant updates without page reload
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 3. Product Details Page
+- Dynamic routing using:
+  - `/products/[id]`
+- Displays:
+  - Large product image
+  - Title
+  - Description
+  - Price
+  - Category
+- Implemented using **Next.js App Router dynamic routes**
 
-## Deploy on Vercel
+#### 4. Favorites Feature
+- Users can:
+  - Mark / unmark products as favorites
+- Favorites are:
+  - Persisted using `localStorage`
+- Includes:
+  - Toggle to view only favorite products
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 5. Responsive Design
+- Mobile-first approach
+- Fully usable on:
+  - Mobile
+  - Tablet
+  - Desktop
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🌟 Bonus Features Implemented
+
+- **Server Components** where appropriate for performance and SEO
+- **Pagination** for better data handling and UX
+- **Sorting by price**
+  - Low → High
+  - High → Low
+- **Dark Mode Toggle**
+  - Persisted theme using system/local preference
+- **Basic Accessibility**
+  - ARIA labels
+  - Keyboard navigable controls
+- **Unit Tests**
+  - Implemented using Jest & Testing Library
+
+---
+
+## ⚖️ Assumptions & Trade-offs
+
+- **Client-side search & filtering**
+  - Assumed product dataset size is manageable
+  - Keeps implementation simple and fast
+
+- **localStorage for favorites**
+  - No backend or authentication assumed
+  - Data is device/browser-specific
+
+- **Fake Store API**
+  - Used as-is without caching or backend proxy
+  - Assumed high availability for demo purposes
+
+- **Pagination**
+  - Implemented client-side instead of server-side
+  - Suitable for demo-scale datasets
+
+- **Accessibility**
+  - Focused on essential ARIA roles and keyboard navigation
+  - Not a full WCAG audit, but strong baseline
+
+---
+
+## 🧠 Tech Stack
+
+- **Next.js** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **Jest & Testing Library**
+- **Vercel** for deployment
+
+---
+
+## 📌 Notes
+
+This project was built with a **real-world, production mindset**, emphasizing:
+- Clean component architecture
+- Readable and maintainable code
+- Performance and user experience
+- Accessibility and responsiveness
+
+---
+
+👤 **Author:** Sarthak Tiwari  
