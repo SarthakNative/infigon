@@ -5,6 +5,7 @@ const API_BASE = 'https://fakestoreapi.com';
 
 export async function fetchProducts(): Promise<Product[]> {
   const res = await fetch(`${API_BASE}/products`, {
+    cache: 'force-cache',
     next: { revalidate: 3600 } // Cache for 1 hour
   });
   

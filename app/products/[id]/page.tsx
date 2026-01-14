@@ -1,7 +1,6 @@
 // app/products/[id]/page.tsx
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { fetchProduct } from '@/lib/api';
 import BackButton from '@/components/BackButton';
 
 /**
@@ -10,7 +9,14 @@ import BackButton from '@/components/BackButton';
 export async function generateStaticParams() {
   try {
     // Fetch all products to get their IDs
-    const response = await fetch('https://fakestoreapi.com/products');
+    const response = await fetch('https://fakestoreapi.com/products', {
+      cache: 'force-cache', // Ensure it's cached during build
+    });
+    
+    if (!response.ok) {
+      return [];
+    }
+    
     const products = await response.json();
     
     // Return array of params for each product
@@ -19,20 +25,17 @@ export async function generateStaticParams() {
     }));
   } catch (error) {
     console.error('Error generating static params:', error);
-    // Return empty array as fallback
     return [];
   }
 }
 
 /**
- * Set to 'force-static' to pre-render pages
- * Or use 'auto' to let Next.js decide
+ * Enable dynamic params - allows accessing products not in generateStaticParams
  */
-export const dynamic = 'auto';
+export const dynamicParams = true;
 
 /**
  * Enable ISR - revalidate every 3600 seconds (1 hour)
- * This allows new products to be added dynamically
  */
 export const revalidate = 3600;
 
@@ -40,6 +43,19 @@ interface PageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 export default async function ProductPage({ params }: PageProps) {
@@ -51,10 +67,24 @@ export default async function ProductPage({ params }: PageProps) {
     notFound();
   }
 
-  // Fetch product with error handling
-  let product;
+  // Fetch product directly here with proper cache settings
+  let product: Product;
   try {
-    product = await fetchProduct(numericId);
+    const response = await fetch(
+      `https://fakestoreapi.com/products/${numericId}`,
+      {
+        // Use 'force-cache' for static generation
+        // Or 'no-store' if you want always fresh data
+        cache: 'force-cache',
+        next: { revalidate: 3600 }, // ISR: revalidate every hour
+      }
+    );
+
+    if (!response.ok) {
+      notFound();
+    }
+
+    product = await response.json();
   } catch (error) {
     console.error('Error fetching product:', error);
     notFound();
