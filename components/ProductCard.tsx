@@ -22,7 +22,7 @@ export default function ProductCard({ product, isFavorite, onToggleFavorite }: P
         />
         <button 
           onClick={onToggleFavorite}
-          className="absolute top-2 right-2 p-2 bg-white/80 rounded-full"
+          className="cursor-pointer absolute top-2 right-2 p-2 bg-white/80 rounded-full"
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
           <Heart fill={isFavorite ? "red" : "white"} color={isFavorite ? "red" : "gray"} />
