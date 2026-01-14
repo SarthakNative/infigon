@@ -25,6 +25,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -102,6 +103,15 @@ export default function ProductPage() {
           {/* Product Image */}
           <div className="md:w-1/2 p-8">
             <div className="relative h-96">
+              {imageLoading && (
+                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg flex items-center justify-center">
+                  <div className="text-gray-400 dark:text-gray-500">
+                    <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              )}
               <Image
                 src={product.image}
                 alt={product.title}
@@ -109,6 +119,7 @@ export default function ProductPage() {
                 className="object-contain"
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
+                onLoadingComplete={() => setImageLoading(false)}
               />
             </div>
           </div>
