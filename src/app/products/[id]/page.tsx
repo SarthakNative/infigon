@@ -4,15 +4,18 @@ import { fetchProduct } from '@/lib/api';
 import BackButton from '@/components/BackButton';
 
 /**
- * ISR: page is generated on-demand and revalidated
+ * Force dynamic rendering for each request
  */
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 /**
- * Do NOT prebuild product pages (scalable)
+ * Remove or modify generateStaticParams
  */
 export async function generateStaticParams() {
+  // Return empty array or some sample IDs
   return [];
+  // OR return [{ id: '1' }, { id: '2' }] for some pre-generation
 }
 
 interface PageProps {
@@ -22,7 +25,7 @@ interface PageProps {
 }
 
 export default async function ProductPage({ params }: PageProps) {
-  const { id } = await params; // ✅ REQUIRED in new Next.js
+  const { id } = await params;
 
   const numericId = Number(id);
 
