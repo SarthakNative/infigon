@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     domains: ['fakestoreapi.com'],
     remotePatterns: [new URL('https://fakestoreapi.com/**')],
   },
+  output: 'standalone',
    compiler: {
     styledComponents: true,
   }
