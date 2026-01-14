@@ -6,6 +6,8 @@ import BackButton from '@/components/BackButton';
 /**
  * ✅ Allow dynamic routes at runtime (CRITICAL)
  */
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 export const dynamicParams = true;
 
 /**
